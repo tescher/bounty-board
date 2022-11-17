@@ -175,7 +175,7 @@ export const BountySchema = object({
 	paidStatus: paidStatus.optional(),
 	paidAt: string().optional(),
 	paidBy: DiscordUser.optional(),
-	payeeData: PayeeData.optional(),
+	payeeData: PayeeData.optional().nullable(),
 
 	statusHistory: array(StatusHistory).optional(),
 	activityHistory: array(ActivityHistory).optional(),
