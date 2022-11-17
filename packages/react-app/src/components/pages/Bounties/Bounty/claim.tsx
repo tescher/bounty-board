@@ -37,7 +37,7 @@ import {
 import AccessibleLink from '@app/components/parts/AccessibleLink';
 import { CustomerContext } from '@app/context/CustomerContext';
 import { baseUrl } from '@app/constants/discordInfo';
-import { useRequiredRoles } from '@app/components/global/Auth';
+import RestrictedTo from '@app/components/global/Auth';
 import { mutate } from 'swr';
 import BOUNTY_STATUS from '@app/constants/bountyStatus';
 import ACTIVITY from '@app/constants/activity';
@@ -106,9 +106,11 @@ const BountyClaim = ({ bounty }: { bounty: BountyCollection }): JSX.Element => {
 				show && (
 					// For complex bounties, take them back to Discord
 					bounty.evergreen || bounty.requireApplication ? (
-						<ClaimDiscord canonicalCard={bounty.canonicalCard} />
+						<RestrictedTo roles={['claim-bounties', 'admin']}>
+							<ClaimDiscord canonicalCard={bounty.canonicalCard} />
+						</RestrictedTo>
 					) : (
-						<>
+						<RestrictedTo roles={['claim-bounties', 'admin']}>
 							<ClaimWeb user={user} bounty={bounty} onOpen={onOpen} />
 							<Modal onClose={onClose} isOpen={isOpen} isCentered>
 								<ModalOverlay />
@@ -156,7 +158,7 @@ const BountyClaim = ({ bounty }: { bounty: BountyCollection }): JSX.Element => {
 									</ModalFooter>
 								</ModalContent>
 							</Modal>
-						</>
+						</RestrictedTo>
 
 					)
 				)
@@ -203,17 +205,10 @@ export const ClaimWeb = ({
 	onOpen: () => void;
 }): JSX.Element => {
 	const { colorMode } = useColorMode();
-	let canClaim = useRequiredRoles(['claim-bounties', 'admin']);
 	let helpMessage = 'Claim this bounty';
-	if (canClaim) {
-		const { isClaimable, reason } = isClaimableByUser(bounty, user);
-		if (!isClaimable) {
-			canClaim = false;
-			helpMessage = reason;
-		}
-	} else {
-		helpMessage =
-			'You need to sign in and have the correct permissions to claim this bounty';
+	const { isClaimable, reason } = isClaimableByUser(bounty, user);
+	if (!isClaimable) {
+		helpMessage = reason;
 	}
 	return (
 		<Tooltip
@@ -221,7 +216,7 @@ export const ClaimWeb = ({
 			label={helpMessage}
 			shouldWrapChildren
 			mt="3"
-			display={canClaim ? 'hidden' : 'inline-block'}
+			display='hidden'
 		>
 			<Box p={2}>
 				<Button
@@ -230,7 +225,6 @@ export const ClaimWeb = ({
 					aria-label="claim-button"
 					bg={colorMode === 'light' ? 'primary.300' : 'primary.700'}
 					onClick={onOpen}
-					disabled={!canClaim}
 					size='md'
 					width='200px'
 				>
@@ -241,7 +235,7 @@ export const ClaimWeb = ({
 				as="i"
 				my={1}
 				color="primary.500"
-				display={canClaim ? 'none' : { base: 'block', md: 'none' }}
+				display='none'
 			>
 				{helpMessage}
 			</Text>
