@@ -118,6 +118,8 @@ Create a role in your Discord server (e.g. BB-core), copy its ID, and save it fo
 
 ## Create your .env.local file
 
+In packages/react-app/...
+
 Copy .env.qa to .env.local
 
 NEXTAUTH_URL, NEXT_PUBLIC_API_URL and NEXT_PUBLIC_DAO_BOUNTY_BOARD_URL should be set to the "http://localhost:3000". If your server is accessible by something other than localhost:3000, adjust these variables accordingly.
@@ -134,7 +136,7 @@ MONGODB_URI=mongodb://mongo:27017/bountyboard
 
 To start the instance, you can run the following command
 ```
-$ docker-compose up
+$ sudo docker compose up
 ```
 
 Docker containerizes all the commands given below and helps you get started with the project without any hassle
@@ -193,7 +195,7 @@ All the revelant files are in the `mongo/` folder of the monorepo, to run the co
 
 ```sh
 cd mongo
-docker-compose up
+sudo docker compose up
 ```
 
 This should start the database on port 27017, and automatically seed with test data. The application will restart with fresh seed data everytime you run the docker compose command, so don't worry about messing it up.
