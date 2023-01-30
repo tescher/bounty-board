@@ -69,7 +69,8 @@ You will need to add your Discord server information (aka your "customer") to th
     "bountyChannel": "<ID of the default channel where bounties will appear>",
     "externalRoleMap": {
       "adminExternalRoles": ["<ID of the administrative role you saved earlier>"]
-    }
+    },
+    "allowlistedRoles": ["<ID of the administrative role you saved earlier>"]
 }
 ```
 
