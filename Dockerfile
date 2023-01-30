@@ -1,5 +1,5 @@
 
-FROM node:14.15.0-alpine
+FROM node:16.19.0-alpine
 WORKDIR /bountyboard
 RUN npm update -g npm 
 COPY package.json .
