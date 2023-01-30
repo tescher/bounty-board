@@ -76,6 +76,8 @@ You will need to add your Discord server information (aka your "customer") to th
 
 ## With Docker
 
+(NOTE: If you plan to run this along with the Bounty Board Bot, you will need to run without Docker, including MongoDB. The Bot is a different application and needs shared access to Mongo)
+
 In .env.local update the MONGODB_URI with the following:
 ```
 MONGODB_URI=mongodb://mongo:27017/bountyboard
@@ -159,7 +161,7 @@ docker-compose up --build
 
 Use this approach if you do not want to use docker, or are having troubles installing it. Be mindful that this approach will be more error prone, you may instead want to request test access to the DB.
 
-If you're firing up a fresh instance of Mongo, you will need to seed the database from the command line or discord, as the board does not currently have an 'add bounty` functionality.
+If you're firing up a fresh instance of Mongo, you will need to seed the database. You can do this from this web application (Create Bounty), using the Bounty Board Bot, or from the mongoDB command line.
 
 If you're adding from command line, you can use the mongoimport utility to import one of the JSON files in the `mongo/bounties` folder. 
 
@@ -172,4 +174,4 @@ $ mongoimport\
     --file path/to/mongo/bounties/file.json\
     --jsonArray # only needed if loading an array
 ```
-If you've made it this far, the application should run and should be showing a bounty on the main screen. You can directly query the API backend through the app at `localhost:3000/api/bounties`
+If you've made it this far, the application should run and should be showing the bounty list on your browser. You can directly query the API backend through the app at `localhost:3000/api/bounties`
