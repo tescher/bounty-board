@@ -118,10 +118,12 @@ Please refer to [the Mongoose docs](https://mongoosejs.com/docs/connections.html
 
 For help setting up MongoDB locally, see their [installation instructions](https://docs.mongodb.com/manual/administration/install-community/).
 
+NOTE: MongoDB also needs to be set up with a replica set because we make use of changestreams to track changes across applications. See here: https://www.mongodb.com/docs/manual/tutorial/convert-standalone-to-replica-set/. 
+
 ### Setting Up Data in MongoDB
 The app expects a MongoDB db `bountyboard` with the collections `bounties` and `customers`, as specified in the json files within `mongo/bounties` and `mongo/customers`.
 
-### Using Docker for Mongo
+### Using Docker to run MongoDB
 Ensure you have docker and docker-compose installed (and running) on your desktop.
 
 All the revelant files are in the `mongo/` folder of the monorepo, to run the container:
@@ -157,23 +159,18 @@ force Rebuild the container:
 docker-compose up --build
 ```
 
-### Manually (Not recommended)
+### Manually running MongoDB
 
 NOTE: It is recommended that you install Mongo 5.x. We have not tested Mongo 6.x yet. This also means if you are running Ubuntu you will need Ubuntu 20.04
 
-Use this approach if you do not want to use docker, or are having troubles installing it. Be mindful that this approach will be more error prone, you may instead want to request test access to the DB.
+Use this approach if you are also running the Bounty Board Bot, do not want to use docker, or are having troubles installing it. Be mindful that this approach will be more error prone, you may instead want to request test access to the DB.
 
-If you're firing up a fresh instance of Mongo, you will need to seed the database. You can do this from this web application (Create Bounty), using the Bounty Board Bot, or from the mongoDB command line.
+You will need to modify mongo/seed.sh to change the host from 'mongo' to your mongo host, and remove 'usr/tmp/' from the front of the import files. Then execute seed.sh to import the customers, bounties, and install the text index.
 
-If you're adding from command line, you can use the mongoimport utility to import one of the JSON files in the `mongo/bounties` folder. 
+### Finally start up the application:
 
-Note: As of MongoDB 4.4 mongoimport is now a part of the MongoDB Database Tools package and must be downloaded seperately. For installation see the [MongoDB Database Tools](https://docs.mongodb.com/database-tools/installation/installation/)
-
-```bash
-$ mongoimport\
-    --db bountyboard\
-    --collection bounties\
-    --file path/to/mongo/bounties/file.json\
-    --jsonArray # only needed if loading an array
 ```
+yarn dev
+```
+
 If you've made it this far, the application should run and should be showing the bounty list on your browser. You can directly query the API backend through the app at `localhost:3000/api/bounties`
