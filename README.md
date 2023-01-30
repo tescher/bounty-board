@@ -159,6 +159,8 @@ docker-compose up --build
 
 ### Manually (Not recommended)
 
+It is recommended that you install Mongo 5.x. We have not tested Mongo 6.x yet.
+
 Use this approach if you do not want to use docker, or are having troubles installing it. Be mindful that this approach will be more error prone, you may instead want to request test access to the DB.
 
 If you're firing up a fresh instance of Mongo, you will need to seed the database. You can do this from this web application (Create Bounty), using the Bounty Board Bot, or from the mongoDB command line.
