@@ -159,7 +159,7 @@ docker-compose up --build
 
 ### Manually (Not recommended)
 
-It is recommended that you install Mongo 5.x. We have not tested Mongo 6.x yet.
+NOTE: It is recommended that you install Mongo 5.x. We have not tested Mongo 6.x yet. This also means if you are running Ubuntu you will need Ubuntu 20.04
 
 Use this approach if you do not want to use docker, or are having troubles installing it. Be mindful that this approach will be more error prone, you may instead want to request test access to the DB.
 
