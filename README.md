@@ -126,6 +126,23 @@ NEXTAUTH_URL, NEXT_PUBLIC_API_URL and NEXT_PUBLIC_DAO_BOUNTY_BOARD_URL should be
 DISCORD_CLIENT_ID should be set to the Client ID you copied from your Discord application.
 DISCORD_CLIENT_SECRET should be set to the Client Secret you copied from your Discord application.
 
+## Add your Discord server to the customer seed file
+You will need to add your Discord server information (aka your "customer") to the mongo/customers/seed_customers.json file. Add an object as follows:
+```
+{
+    "_id": {
+      "$oid": "616f00ae05026959ede9a3aa"
+    },
+    "customerId": "<Your Discord server ID>",
+    "customerKey": "<Your Discord server name in lower case>",
+    "customerName": "<Your Discord server name>",
+    "bountyChannel": "<ID of the default channel where bounties will appear>",
+    "externalRoleMap": {
+      "adminExternalRoles": ["<ID of the administrative role you saved earlier>"]
+    }
+}
+```
+
 ## With Docker
 
 In .env.local update the MONGODB_URI with the following:
@@ -171,23 +188,7 @@ For help setting up MongoDB locally, see their [installation instructions](https
 ### Setting Up Data in MongoDB
 The app expects a MongoDB db `bountyboard` with the collections `bounties` and `customers`, as specified in the json files within `mongo/bounties` and `mongo/customers`.
 
-You will need to add your Discord server information (aka your "customer") to the mongo/customers/seed_customers.json file. Add an object as follows:
-```
-{
-    "_id": {
-      "$oid": "616f00ae05026959ede9a3aa"
-    },
-    "customerId": "<Your Discord server ID>",
-    "customerKey": "<Your Discord server name in lower case>",
-    "customerName": "<Your Discord server name>",
-    "bountyChannel": "<ID of the default channel where bounties will appear>",
-    "externalRoleMap": {
-      "adminExternalRoles": ["<ID of the administrative role you saved earlier>"]
-    }
-}
-```
-
-### Using Docker
+### Using Docker for Mongo
 Ensure you have docker and docker-compose installed (and running) on your desktop.
 
 All the revelant files are in the `mongo/` folder of the monorepo, to run the container:
