@@ -101,12 +101,11 @@ Refer to the [Bounty Board Commands and Workflow](https://bankless.notion.site/T
 7. **Discord/Bot: Complete**: Bounty claimer can signal completion ✅ on the post in the #🧀-bounty-board channel. Bounty creator receives message to tip bounty completer.
 8. **Frontend Status: Completed**: Work is done.
 
-
 # Getting Started
 
 Clone this repo locally.
 
-## Create an application on your Discord serer
+## Create an application on your Discord server
 Go to the Discord Developer Portal (https://discord.com/developers). 
 
 Click "New Application". Give your application a name (e.g. Bounty Board Web).
