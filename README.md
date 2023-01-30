@@ -104,9 +104,30 @@ Refer to the [Bounty Board Commands and Workflow](https://bankless.notion.site/T
 
 # Getting Started
 
+Clone this repo locally.
+
+## Create an application on your Discord serer
+Go to the Discord Developer Portal (https://discord.com/developers). 
+
+Click "New Application". Give your application a name (e.g. Bounty Board Web).
+
+Go to the OAuth2 -> General section. Copy the Client ID and Client Secret. Add a Redirect and enter "http://localhost:3000/api/auth/callback/discord". If your server is accessible by something other than localhost:3000, adjust this Redirect accordingly. In AUTHORIZATION METHOD, choose "In-app authorization". In SCOPES check "applications.commands". Save your changes.
+
+## Create an administrative role in your Discord server
+Create a role in your Discord server (e.g. BB-core), copy its ID, and save it for later. Give yourself that role. 
+
+## Create your .env.local file
+
+Copy .env.qa to .env.local
+
+NEXTAUTH_URL, NEXT_PUBLIC_API_URL and NEXT_PUBLIC_DAO_BOUNTY_BOARD_URL should be set to the "http://localhost:3000". If your server is accessible by something other than localhost:3000, adjust these variables accordingly.
+
+DISCORD_CLIENT_ID should be set to the Client ID you copied from your Discord application.
+DISCORD_CLIENT_SECRET should be set to the Client Secret you copied from your Discord application.
+
 ## With Docker
 
-To run the project, copy the local `.env.local` file by copying the `.env.qa` for most variabled. Update the MONGODB_URI with the following URI
+In .env.local update the MONGODB_URI with the following:
 ```
 MONGODB_URI=mongodb://mongo:27017/bountyboard
 ```
@@ -117,7 +138,6 @@ $ docker-compose up
 ```
 
 Docker containerizes all the commands given below and helps you get started with the project without any hassle
-
 
 ## Without Docker
 
@@ -130,14 +150,12 @@ $ yarn
 $ yarn dev 
 ```
 Which will install packages and run the application on port 3000. The `package.json` file in the respective repo gives a full list of commands.
-### Configure local `.env` file
 
-The react application looks for an environment variables file named `.env.local` on starting. You can copy the `.env.qa` file for most of the variables. You will need to add the `MONGODB_URI` and `DISCORD_BOUNTY_BOARD_WEBHOOK` as covered below.
 ### Setup MongoDB
 
 Connection to MongoDB is handled through the Mongoose DRM. You can either connect to a hosted instance of MongoDB, or run a local development copy.
 
-If running locally, your `.env.local` will contain something like:
+If running locally, your `.env.local` should contain something like:
 ```
 MONGODB_URI=mongodb://localhost:27017/bountyboard
 ```
@@ -150,7 +168,23 @@ Please refer to [the Mongoose docs](https://mongoosejs.com/docs/connections.html
 For help setting up MongoDB locally, see their [installation instructions](https://docs.mongodb.com/manual/administration/install-community/).
 
 ### Setting Up Data in MongoDB
-The app expects a MongoDB db `bountyboard` with the collection `bounties`, as specified in the json files within `mongo/bounties`, you can either maintain an instance of mongo manually, or use the prebuilt docker image (recommended).
+The app expects a MongoDB db `bountyboard` with the collections `bounties` and `customers`, as specified in the json files within `mongo/bounties` and `mongo/customers`.
+
+You will need to add your Discord server information (aka your "customer") to the mongo/customers/seed_customers.json file. Add an object as follows:
+```
+{
+    "_id": {
+      "$oid": "616f00ae05026959ede9a3aa"
+    },
+    "customerId": "<Your Discord server ID>",
+    "customerKey": "<Your Discord server name in lower case>",
+    "customerName": "<Your Discord server name>",
+    "bountyChannel": "<ID of the default channel where bounties will appear>",
+    "externalRoleMap": {
+      "adminExternalRoles": ["<ID of the administrative role you saved earlier>"]
+    }
+}
+```
 
 ### Using Docker
 Ensure you have docker and docker-compose installed (and running) on your desktop.
@@ -206,6 +240,3 @@ $ mongoimport\
     --jsonArray # only needed if loading an array
 ```
 If you've made it this far, the application should run and should be showing a bounty on the main screen. You can directly query the API backend through the app at `localhost:3000/api/bounties`
-### Setting Up the Discord Webhook
-The `DISCORD_BOUNTY_BOARD_WEBHOOK` is not required to start the app, but can be fetched from a member of the bounty board development team. Add it to your `.env.local` file once you have it. 
-
